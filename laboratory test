@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void Push(int x);
+void Pop();
+void Print();
+
+typedef struct node {
+    int i;
+    struct node *next;
+}item;
+
+
+struct node *head;
+
+int main()
+{
+    int n,x,i;
+    head=NULL;
+ /*   printf("enter the number of integers:");
+    scanf("%d",&n);
+    for(i=0;i<n;i++){
+        printf("integer = ");
+        scanf("%d",&x);
+        Push(x);
+
+    }*/
+
+  //  Print();
+
+Push(5);
+Push(4);
+Push(3);
+Push(2);
+Push(1);
+
+     Pop();
+     Pop();
+     Pop();
+     Pop();
+     Pop();
+    getchar();
+    return 0;
+}
+
+void Push(int x){
+    item *temp=malloc(sizeof(struct node));
+    if(head==NULL){
+        temp->i=x;
+        temp->next=NULL;
+        head=temp;
+    }
+    else
+    {
+        temp->i=x;
+        temp->next=head;
+        head=temp;
+    }
+}
+
+void Print(){
+    while(current){
+        printf("%d \n",current->i);
+        current=current->next;
+    }
+}
+
+void Pop(){
+    printf("%d\n",head->i);
+    head=head->next;
+
+
+}
