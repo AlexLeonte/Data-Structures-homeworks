@@ -1,0 +1,121 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+    char word[30];
+    char sir[100];
+    int i=0;
+    int stop=0;
+
+typedef struct node{
+    char word[30];
+    int occurences;
+    struct node *next;
+}item;
+
+void getword();
+void Insert(char x[]);
+void Print();
+
+struct node *head;
+struct node *current;
+
+int main()
+{
+    FILE *f;
+    head=NULL;
+    f=fopen("string.txt","r");
+
+    while(fgets(sir,100,f)){
+        while(i<=strlen(sir)){
+            if(stop==1)
+                break;
+            getword();
+            Insert(word);
+            memset(word,0,sizeof(word));                  //reseteaza cuvantul
+            i++;
+            }
+        stop=0;
+    }
+    Print();
+
+    fclose(f);
+    return 0;
+}
+
+void getword(){
+
+    int j=0;
+
+        while(sir[i]!=' '){
+            if(sir[i]=='.'){
+                stop=1;
+                break;
+                }
+            word[j]=sir[i];
+            j++;
+            i++;
+        }
+        j=0;
+
+
+}
+void Insert(char x[]){
+    item *temp = malloc(sizeof(struct node));
+    if(head==NULL){
+        strcpy(temp->word,x);
+        temp->occurences=1;
+        head=temp;
+        temp->next=NULL;
+
+    }
+else{
+
+    current = head;
+    while(current){
+        if((current->word)[0]==x[0]){           //verific daca elementu exista in lista si daca da occurences++
+            current->occurences++;
+            break;
+            }
+    else
+        {
+            if(toupper(x[0])<toupper((current->word)[0])){          //verific daca elementu este mai mic decat un alt element din lista
+                if(current==head){                  //si daca da inserez inaintea lui (insa trebuie sa verific inainte
+                    strcpy(temp->word,x);            //daca elementul in cauza nu cumva este head
+                    temp->occurences=1;
+                    temp->next=current;
+                    head=temp;
+                    break;
+                }
+                else
+                    if((toupper(x[0]))<toupper(((current->next)->word)[0])){    //elementul inaintea(subliniez inaintea) caruia vrem sa inseram un nod nu este head
+                        strcpy(temp->word,x);                                   //deci inseram undeva intre 2 noduri
+                        temp->occurences=1;
+                        temp->next=current->next;
+                        current->next=temp;
+                        break;
+                        }
+
+             }
+            else
+                if(current->next==NULL){
+                strcpy(temp->word,x);
+                temp->occurences=1;
+                current->next=temp;
+                temp->next=NULL;
+                break;
+                }
+        }
+    current=current->next;
+    }
+}
+}
+
+
+void Print(){
+    current=head;
+
+    while(current){
+        printf("%s:%d\n",current->word,current->occurences);
+        current=current->next;
+        }
+    }
