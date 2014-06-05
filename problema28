@@ -1,0 +1,149 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void Insert(int x);
+void Print();
+void Print2();
+void Print3();
+int randomm();
+int returnmid(int n);
+void createl3();
+typedef struct node{
+    int i;
+    struct node *next;
+}item;
+
+struct node *head;
+struct node *head2;
+struct node *current;
+struct node *aux;
+struct node *head3;
+
+int main()
+{
+    int n,i,x,mid;
+    head=NULL;
+    head2=NULL;
+    current =NULL;
+    aux=NULL;
+    head3=NULL;
+
+    printf("enter the numbers of elements:");
+    scanf("%d",&n);
+    mid=returnmid(n);
+    for(i=0;i<n;i++){
+        printf("enter the value for the node:");
+        scanf("%d",&x);
+        Insert(x);
+        if(i==n/2-1){
+            aux=current;
+        }
+        }
+    Print();
+    printf("%d\n",aux->i);
+    head2=aux->next;
+    aux->next=NULL;
+    Print();
+    Print2();
+    createl3();
+    printf("\n");
+    Print3();
+
+
+    return 0;
+
+}
+void Insert(int i){
+    item *temp=malloc(sizeof(item));
+    if(head==NULL){
+        temp->i=i;
+        head=temp;
+        temp->next=NULL;
+        current=temp;
+    }
+else
+    {
+        temp->i=i;
+        current->next=temp;
+        temp->next=NULL;
+        current=temp;
+    }
+}
+
+void Print(){
+    int i;
+    item *temp=malloc(sizeof(item));
+    temp=head;
+    while(temp){
+        printf("%d ",temp->i);
+        temp=temp->next;
+    }
+    printf("\n");
+}
+void Print2(){
+    int i;
+    item *temp=malloc(sizeof(item));
+    temp=head2;
+    while(temp){
+        printf("%d ",temp->i);
+        temp=temp->next;
+    }
+    printf("\n");
+}
+void Print3(){
+    int i;
+    item *temp=malloc(sizeof(item));
+    temp=head3;
+    while(temp){
+        printf("%d ",temp->i);
+        temp=temp->next;
+    }
+    printf("\n");
+}
+int randomm(){
+      int r;
+    time_t t;
+
+
+    srand((unsigned)time(&t));
+    r=(rand()%3);
+    return r;
+}
+int returnmid(int n){
+  switch(randomm()){
+        case 0:
+            return (n/2);
+            break;
+        case 1:
+            return (n/2)-1;
+            break;
+        case 2:
+            return (n/2)+1;
+            break;
+    }
+    }
+void createl3(){
+    int c=2;
+    item *temp=malloc(sizeof(item));
+    head3=head2;
+    temp=head3;
+    head2=head2->next;
+
+    while(head||head2){
+        if(c%2==0){
+            temp->next=head;
+            head=head->next;
+            temp=temp->next;
+        }
+    else
+        {
+            temp->next=head2;
+            head2=head2->next;
+            temp=temp->next;
+        }
+    c++;
+    }
+    temp->next=NULL;
+    }
+
+
