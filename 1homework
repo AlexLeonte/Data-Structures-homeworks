@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+    FILE *f;
+    int nrf,nrcrt=0;           //nrf e folosit pentru a sti a cata prezenta a fost la examen astfel nota se insereaza
+                                // grade[nrf] .daca nu apare acest insert atunci e 0.
+
+
+void createlist(char source[]);   //primeste parametru sursa fisierului =>creeaza lista (daca gaseste numele in lista ii adauga nota daca nu adauga alt nod)
+float getnota(char newline[],int i);       //salveaza caracterele de dupa virgula intr un vector apoi il transforma in float
+void Insert(char iname[],float igrade,int nr);     //daca nu gaseste numele in lista atunci il insereaza cu parametri insertname si insertgrade
+void Print();                               //printeaza lista cu nume - grade (ambele vectori)
+void removeChar(char *str, char garbage);  //imi sterge ghilimelele
+
+typedef struct node{
+    char name[99];
+    float grade[30];
+    int id;
+    struct node *next;
+    }item;
+
+struct node *head;
+
+int main()
+{
+    createlist("f1.txt");
+    createlist("f2.txt");
+    createlist("f3.txt");
+    createlist("f4.txt");
+
+    printf("elemente in lista si nrfisiere %d si %d \n",nrcrt-1,nrf);
+    Print();
+
+
+    return 0;
+}
+
+void createlist(char source[]){
+    f=fopen(source,"r");
+    char newline[99];
+    char aux[99];
+    item *temp=malloc(sizeof(item));
+    temp=head;
+    int t,i;
+
+    t=1;
+    while(fgets(newline,50,f)){
+        for(i=0;i<strlen(newline);i++)
+            if(newline[i]==','){
+                strncpy(aux,newline,i);
+                aux[i]='\0';
+                removeChar(aux,'\"');
+
+                break;
+                }
+        temp=head;
+        while(temp){
+            if(strcmp(temp->name,aux)==0){
+                temp->grade[nrf]=getnota(newline,i);
+                t=2;
+                break;
+                }
+            temp=temp->next;
+        }
+
+        if(t==1) Insert(aux,getnota(newline,i),nrcrt);
+        nrcrt++;
+
+    }
+    nrf++;
+    fclose(f);
+}
+
+float getnota(char newline[],int i){
+    int c=0;
+    char x[10];
+    for(i=i+1;i<strlen(newline);i++){
+            x[c]=newline[i];
+            c++;}
+    x[c]='\0';
+    return atof(x);
+    }
+
+
+    void Insert(char iname[],float igrade,int nr){
+        item *temp1=malloc(sizeof(item));
+        strcpy(temp1->name,iname);
+        temp1->grade[nrf]=igrade;
+        temp1->id=nr;
+        temp1->next=head;
+        head=temp1;
+    }
+
+    void Print(){
+        int i;
+        item *temp=malloc(sizeof(item));
+        temp=head;
+        while(temp){
+            printf("%d.%s - ",temp->id,temp->name);
+            for(i=0;i<nrf;i++){
+                printf("%.2f ",temp->grade[i]);
+                }
+            printf("\n");
+            temp=temp->next;
+        }
+    }
+
+void removeChar(char *str, char garbage) {
+
+    char *src, *dst;
+    for (src = dst = str; *src != '\0'; src++) {
+        *dst = *src;
+        if (*dst != garbage) dst++;
+    }
+    *dst = '\0';
+}
