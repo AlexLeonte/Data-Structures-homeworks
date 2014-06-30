@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int rezult[10];
+int lungime;
+void convertire(int n,int b);
+void complement1();
+int main()
+{   int i,n,b;
+    printf("enter the integer number:");
+    scanf("%d",&n);
+    printf("enter the base:");
+    scanf("%d",&b);
+    convertire(n,b);
+    for(i=0;i<lungime;i++)
+        printf("%d",rezult[i]);
+
+    return 0;
+}
+
+void convertire(int n,int b){
+int vector[10];
+    int i;int j;
+
+    int r;
+    j=0;
+    while(n){
+        r=n%b;
+        n=n/b;
+        vector[j]=r;
+        j++;
+        lungime++;
+
+    }
+     for(i=lungime-1,j=0;i>=0;i--,j++)
+        rezult[j]=vector[i];
+
+
+}
